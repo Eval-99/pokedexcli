@@ -1,6 +1,39 @@
 package main
 
-import "strings"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+func startRepl() {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for {
+		fmt.Print("Pokedex > ")
+		scanner.Scan()
+		userInput := cleanInput(scanner.Text())
+
+		if len(userInput) == 0 {
+			continue
+		}
+
+		commandName := userInput[0]
+		command, ok := getCommands()[commandName]
+		if !ok {
+			fmt.Println("Unknown command")
+			continue
+		} else {
+			err := command.callback()
+			if err != nil {
+				fmt.Println(err)
+			}
+			continue
+		}
+
+	}
+}
 
 func cleanInput(text string) []string {
 	stringsSlc := []string{}
