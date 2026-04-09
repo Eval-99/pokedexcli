@@ -1,5 +1,7 @@
 package commands
 
+import "github.com/Eval-99/pokedexcli/internal/pokecache"
+
 type cliCommand struct {
 	Name        string
 	Description string
@@ -9,6 +11,7 @@ type cliCommand struct {
 type Config struct {
 	Next     string
 	Previous string
+	Cache    pokecache.Cache
 }
 
 type (

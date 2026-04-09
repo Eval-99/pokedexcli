@@ -5,13 +5,18 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Eval-99/pokedexcli/internal/commands"
+	"github.com/Eval-99/pokedexcli/internal/pokecache"
 )
 
 func StartRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
-	config := commands.Config{Next: "https://pokeapi.co/api/v2/location-area"}
+	config := commands.Config{
+		Next:  "https://pokeapi.co/api/v2/location-area",
+		Cache: *pokecache.NewCache(5 * time.Second),
+	}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()

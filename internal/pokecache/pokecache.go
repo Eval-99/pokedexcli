@@ -16,30 +16,30 @@ type cacheEntry struct {
 	val       []byte
 }
 
-func NewCache(interval time.Duration) Cache {
+func NewCache(interval time.Duration) *Cache {
 	c := Cache{
 		cachedItems: make(map[string]cacheEntry),
 		interval:    interval,
 		mu:          &sync.Mutex{},
 	}
 	go c.reapLoop()
-	return c
+	return &c
 }
 
 func (c *Cache) Add(key string, val []byte) {
 	newVal := cacheEntry{createdAt: time.Now(), val: val}
 	c.mu.Lock()
 	c.cachedItems[key] = newVal
-	defer c.mu.Unlock()
+	c.mu.Unlock()
 }
 
 func (c *Cache) Get(key string) ([]byte, bool) {
 	c.mu.Lock()
 	item, ok := c.cachedItems[key]
+	defer c.mu.Unlock()
 	if !ok {
 		return []byte{}, false
 	}
-	defer c.mu.Unlock()
 
 	return item.val, true
 }
