@@ -5,7 +5,7 @@ import "github.com/Eval-99/pokedexcli/internal/pokecache"
 type cliCommand struct {
 	Name        string
 	Description string
-	Callback    func(*Config) error
+	Callback    func(*Config, string) error
 }
 
 type Config struct {
@@ -22,6 +22,17 @@ type (
 	}
 	Location struct {
 		Name string `json:"name"`
+	}
+)
+
+type (
+	Monsters struct {
+		PokemonEncounters []Monster `json:"pokemon_encounters"`
+	}
+	Monster struct {
+		Pokemon struct {
+			Name string `json:"name"`
+		} `json:"pokemon"`
 	}
 )
 
@@ -46,6 +57,11 @@ func GetCommands() map[string]cliCommand {
 			Name:        "mapb",
 			Description: "See previous map",
 			Callback:    commandMapb,
+		},
+		"explore": {
+			Name:        "explore",
+			Description: "See monsters in specified area",
+			Callback:    explore,
 		},
 	}
 }

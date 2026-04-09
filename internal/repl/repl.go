@@ -27,12 +27,18 @@ func StartRepl() {
 		}
 
 		commandName := userInput[0]
+		commandArg := ""
+		if len(userInput) > 1 {
+			commandArg = userInput[1]
+		} else {
+			commandArg = ""
+		}
 		command, ok := commands.GetCommands()[commandName]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		} else {
-			err := command.Callback(&config)
+			err := command.Callback(&config, commandArg)
 			if err != nil {
 				fmt.Println(err)
 			}

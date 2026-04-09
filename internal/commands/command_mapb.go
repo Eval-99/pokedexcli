@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func commandMapb(cfg *Config) error {
+func commandMapb(cfg *Config, arg string) error {
 	if cfg.Previous == "" {
 		fmt.Println("you're on the first page")
 		return nil
@@ -20,21 +20,24 @@ func commandMapb(cfg *Config) error {
 			return err
 		}
 
+		defer res.Body.Close()
+
 		data, err := io.ReadAll(res.Body)
 		if err != nil {
 			return err
 		}
+
 		cfg.Cache.Add(cfg.Previous, data)
 
 		if err := json.Unmarshal(data, &locations); err != nil {
 			return err
 		}
 
-		defer res.Body.Close()
 	} else {
 		if err := json.Unmarshal(info, &locations); err != nil {
 			return err
 		}
+		cfg.Cache.Add(cfg.Previous, info)
 	}
 
 	for _, location := range locations.Results {
