@@ -1,31 +1,33 @@
-package main
+package repl
 
 import (
 	"bufio"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/Eval-99/pokedexcli/internal/commands"
 )
 
-func startRepl() {
+func StartRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
-	config := urlData{next: "https://pokeapi.co/api/v2/location-area"}
+	config := commands.Config{Next: "https://pokeapi.co/api/v2/location-area"}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
-		userInput := cleanInput(scanner.Text())
+		userInput := CleanInput(scanner.Text())
 
 		if len(userInput) == 0 {
 			continue
 		}
 
 		commandName := userInput[0]
-		command, ok := getCommands()[commandName]
+		command, ok := commands.GetCommands()[commandName]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		} else {
-			err := command.callback(&config)
+			err := command.Callback(&config)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -35,7 +37,7 @@ func startRepl() {
 	}
 }
 
-func cleanInput(text string) []string {
+func CleanInput(text string) []string {
 	stringsSlc := []string{}
 
 	for string := range strings.FieldsSeq(text) {

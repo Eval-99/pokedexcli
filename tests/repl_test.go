@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/Eval-99/pokedexcli/internal/repl"
+)
 
 func TestCleanInput(t *testing.T) {
 	cases := []struct {
@@ -18,7 +22,7 @@ func TestCleanInput(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := cleanInput(c.input)
+		actual := repl.CleanInput(c.input)
 
 		if len(actual) != len(c.expected) {
 			t.Errorf("Actual result length does not equal expected length")
