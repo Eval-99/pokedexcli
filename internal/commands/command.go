@@ -1,6 +1,8 @@
 package commands
 
-import "github.com/Eval-99/pokedexcli/internal/pokecache"
+import (
+	"github.com/Eval-99/pokedexcli/internal/pokecache"
+)
 
 type cliCommand struct {
 	Name        string
@@ -12,6 +14,7 @@ type Config struct {
 	Next     string
 	Previous string
 	Cache    pokecache.Cache
+	Pokedex  map[string]PokedexEntry
 }
 
 type (
@@ -27,12 +30,32 @@ type (
 
 type (
 	Monsters struct {
-		PokemonEncounters []Monster `json:"pokemon_encounters"`
+		PokemonEncounters []monster `json:"pokemon_encounters"`
 	}
-	Monster struct {
+	monster struct {
 		Pokemon struct {
 			Name string `json:"name"`
 		} `json:"pokemon"`
+	}
+)
+
+type (
+	PokedexEntry struct {
+		BaseExp int    `json:"base_experience"`
+		Name    string `json:"name"`
+		Height  int    `json:"height"`
+		Weight  int    `json:"weight"`
+		Types   []struct {
+			Type struct {
+				Name string `json:"name"`
+			} `json:"type"`
+		} `json:"types"`
+		Stats []struct {
+			Name struct {
+				StatNam string `json:"name"`
+			} `json:"stat"`
+			Stat int `json:"base_stat"`
+		} `json:"stats"`
 	}
 )
 
@@ -62,6 +85,11 @@ func GetCommands() map[string]cliCommand {
 			Name:        "explore",
 			Description: "See monsters in specified area",
 			Callback:    explore,
+		},
+		"catch": {
+			Name:        "catch",
+			Description: "See monsters in specified area",
+			Callback:    catch,
 		},
 	}
 }

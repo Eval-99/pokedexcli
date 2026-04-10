@@ -14,8 +14,9 @@ import (
 func StartRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
 	config := commands.Config{
-		Next:  "https://pokeapi.co/api/v2/location-area",
-		Cache: *pokecache.NewCache(5 * time.Second),
+		Next:    "https://pokeapi.co/api/v2/location-area",
+		Cache:   *pokecache.NewCache(5 * time.Second),
+		Pokedex: make(map[string]commands.PokedexEntry),
 	}
 	for {
 		fmt.Print("Pokedex > ")
