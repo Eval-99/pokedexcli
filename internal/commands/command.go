@@ -91,5 +91,15 @@ func GetCommands() map[string]cliCommand {
 			Description: "See monsters in specified area",
 			Callback:    catch,
 		},
+		"inspect": {
+			Name:        "inspect",
+			Description: "Inspect monsters in Pokedex",
+			Callback:    inspect,
+		},
+		"pokedex": {
+			Name:        "pokedex",
+			Description: "Show all monsters in Pokedex",
+			Callback:    pokedex,
+		},
 	}
 }
